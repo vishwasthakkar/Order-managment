@@ -1,9 +1,11 @@
 package com.egen.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,7 +14,13 @@ public class Item {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  public String id;
+
+  @OneToOne
+
+  private String id;
+
+  @Column(name = "item_name")
+  private String name;
 
   public String getId() {
     return id;
