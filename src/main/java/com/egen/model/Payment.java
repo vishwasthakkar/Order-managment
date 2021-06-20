@@ -21,9 +21,8 @@ public class Payment {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private String id;
 
-  @ManyToOne
-  @JoinColumn(name = "order_id")
-  public Order orderObjInPayment;
+  @Column(name = "payment_amount")
+  private double paymentAmount;
 
   @Column(name = "order_payment_method")
   private PaymentMethod paymentMethod;
@@ -32,15 +31,84 @@ public class Payment {
   private Date paymentDate;
 
   @Column(name = "order_payment_confirmation_number")
-  private String confirmationNumebr;
+  private String confirmationNumber;
 
   @Column(name="payment_time")
-  public Time time;
+  private Time time;
 
   @Column(name="payment_amount",nullable=false)
-  public Double amount;
+  private Double amount;
 
   @OneToOne
-  public Address billingAddress;
+  private Address billingAddress;
+
+  public Payment() {
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public double getPaymentAmount() {
+    return paymentAmount;
+  }
+
+  public void setPaymentAmount(double paymentAmount) {
+    this.paymentAmount = paymentAmount;
+  }
+
+  public PaymentMethod getPaymentMethod() {
+    return paymentMethod;
+  }
+
+  public void setPaymentMethod(PaymentMethod paymentMethod) {
+    this.paymentMethod = paymentMethod;
+  }
+
+  public Date getPaymentDate() {
+    return paymentDate;
+  }
+
+  public void setPaymentDate(Date paymentDate) {
+    this.paymentDate = paymentDate;
+  }
+
+  public String getConfirmationNumber() {
+    return confirmationNumber;
+  }
+
+  public void setConfirmationNumber(String confirmationNumber) {
+    this.confirmationNumber = confirmationNumber;
+  }
+
+  public Time getTime() {
+    return time;
+  }
+
+  public void setTime(Time time) {
+    this.time = time;
+  }
+
+  public Double getAmount() {
+    return amount;
+  }
+
+  public void setAmount(Double amount) {
+    this.amount = amount;
+  }
+
+  public Address getBillingAddress() {
+    return billingAddress;
+  }
+
+  public void setBillingAddress(Address billingAddress) {
+    this.billingAddress = billingAddress;
+  }
+
+
 
 }
