@@ -1,5 +1,7 @@
 package com.egen.model;
 
 public enum ShippingMethod {
-  STORE_PICK_UP, CURB_PICK_UP, DELIVERY, THIRD_PARTY_DELIVERY
+    IN_STORE_PICKUP,
+    CURBSIDE_DELIVERY,
+    SHIP_TO_HOME,
 }

@@ -13,8 +13,6 @@ public class OrderServiceImpl {
   @Autowired
   OrderRepository repository;
 
-  List<Order> getAllOrders(){
-    return repository.
-  }
+
 
 }

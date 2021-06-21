@@ -1,63 +1,73 @@
 package com.egen.model;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "orders")
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "order_id")
-    private String id;
+    @Column(name = "orders_id")
+    private long id;
 
-    @Column(name = "order_status")
+    @Column(name = "orders_status")
     private OrderStatus status;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    private String customer_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id",referencedColumnName = "customer_id")
+    private Customer customer;
 
-    @Column(name = "subtotal")
-    private Double subTotal;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orders")
+    private List<Items> items;
 
-    private Double tax;
+    @Column(name = "orders_subtotal")
+    private double subtotal;
 
-    @Column(name = "shipping_charges")
-    private Double shippingCharges;
+    @Column(name = "orders_tax")
+    private double tax;
 
-    private Double total;
+    @Column(name = "orders_shipping_charges")
+    private double shippingCharges;
 
-    @OneToMany
-    private Set<OrderedItem> itemsInCart;
+    @Column(name = "orders_total")
+    private double total;
 
-    @OneToMany
-    private List<Payment> paymentsList;
+    @Column(name = "order_created_date")
+    private Timestamp createdDate;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    private Address shippingAddress;
+    @Column(name = "orders_modified_date")
+    private Timestamp modifiedDate;
 
-    @Column(name = "shipping_method")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orders")
+    private List<Payment> payment;
+
+    @Column(name = "orders_shipping_method")
     private ShippingMethod shippingMethod;
 
-    public Order() {
+    @OneToOne(fetch = FetchType.LAZY)
+    private Address shippingAddress;
+
+    public Order(){}
+
+    public Order(OrderStatus status, List<Items> items, double tax, double shippingCharges, Timestamp createdDate, Timestamp modifiedDate, List<Payment> payment, ShippingMethod shippingMethod, Address shippingAddress) {
+        this.status = status;
+        this.items = items;
+        this.tax = tax;
+        this.shippingCharges = shippingCharges;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.payment = payment;
+        this.shippingMethod = shippingMethod;
+        this.shippingAddress = shippingAddress;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -69,60 +79,73 @@ public class Order {
         this.status = status;
     }
 
-    public String getCustomer_id() {
-        return customer_id;
+    public List<Items> getItems() {
+        return items;
     }
 
-    public void setCustomer_id(String customer_id) {
-        this.customer_id = customer_id;
+    public void setItems(List<Items> items) {
+        this.items = items;
     }
 
-    public Double getSubTotal() {
-        return subTotal;
+    public double getSubtotal() {
+        double subtotal=0.0d;
+        List<Items> items=getItems();
+        for(Items item: items) {
+            subtotal=subtotal + ((item.getCost())* (item.getQuantity()));
+        }
+        return subtotal;
     }
 
-    public void setSubTotal(Double subTotal) {
-        this.subTotal = subTotal;
-    }
-
-    public Double getTax() {
+    public double getTax() {
         return tax;
     }
 
-    public void setTax(Double tax) {
+    public void setTax(double tax) {
         this.tax = tax;
     }
 
-    public Double getShippingCharges() {
+    public double getShippingCharges() {
         return shippingCharges;
     }
 
-    public void setShippingCharges(Double shippingCharges) {
+    public void setShippingCharges(double shippingCharges) {
         this.shippingCharges = shippingCharges;
     }
 
-    public Double getTotal() {
+    public double getTotal() {
+        double total=getSubtotal()+getTax()+getShippingCharges();
         return total;
     }
-
-    public void setTotal(Double total) {
-        this.total = total;
+    public Timestamp getCreatedDate() {
+        return createdDate;
     }
 
-    public Set<OrderedItem> getItemsInCart() {
-        return itemsInCart;
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public void setItemsInCart(Set<OrderedItem> itemsInCart) {
-        this.itemsInCart = itemsInCart;
+    public Timestamp getModifiedDate() {
+        return modifiedDate;
     }
 
-    public List<Payment> getPaymentsList() {
-        return paymentsList;
+    public void setModifiedDate(Timestamp modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
-    public void setPaymentsList(List<Payment> paymentsList) {
-        this.paymentsList = paymentsList;
+    public List<Payment> getPayment() {
+        return payment;
+    }
+
+    public void setPayment(List<Payment> payment) {
+        this.payment = payment;
+    }
+
+    public ShippingMethod getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(ShippingMethod shippingMethod) {
+        this.shippingMethod = shippingMethod;
     }
 
     public Address getShippingAddress() {
@@ -133,11 +156,13 @@ public class Order {
         this.shippingAddress = shippingAddress;
     }
 
-    public ShippingMethod getShippingMethod() {
-        return shippingMethod;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setShippingMethod(ShippingMethod shippingMethod) {
-        this.shippingMethod = shippingMethod;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
+
+
 }

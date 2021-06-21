@@ -1,114 +1,78 @@
 package com.egen.model;
 
-import java.sql.Time;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "payments")
+@Table(name = "payment")
 public class Payment {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "payment_id")
+    private long id;
 
-  @Column(name = "payment_amount")
-  private double paymentAmount;
+    @Column(name = "payment_method")
+    private PaymentMethod paymentMethod;
 
-  @Column(name = "order_payment_method")
-  private PaymentMethod paymentMethod;
+    @Column(name = "payment_card_number")
+    private long cardNumber;
 
-  @Column(name = "order_payment_date")
-  private Date paymentDate;
+    @Column(name = "payment_confirmation_number")
+    private long paymentConfirmationNumber;
 
-  @Column(name = "order_payment_confirmation_number")
-  private String confirmationNumber;
+    @OneToOne(cascade = {CascadeType.ALL})
+    private Address billingAddress;
 
-  @Column(name="payment_time")
-  private Time time;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "orders_id")
+    public Order orders;
 
-  @Column(name="payment_amount",nullable=false)
-  private Double amount;
+    public Payment(PaymentMethod paymentMethod, long cardNumber, long paymentConfirmationNumber, Address billingAddress) {
+        this.paymentConfirmationNumber = paymentConfirmationNumber;
+        this.billingAddress = billingAddress;
+        this.paymentMethod = paymentMethod;
+        this.cardNumber = cardNumber;
+    }
 
-  @OneToOne
-  private Address billingAddress;
+    public Payment() {}
 
-  public Payment() {
-  }
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
 
-  public String getId() {
-    return id;
-  }
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public long getCardNumber() {
+        return cardNumber;
+    }
 
-  public double getPaymentAmount() {
-    return paymentAmount;
-  }
+    public void setCardNumber(long cardNumber) {
+        this.cardNumber = cardNumber;
+    }
 
-  public void setPaymentAmount(double paymentAmount) {
-    this.paymentAmount = paymentAmount;
-  }
+    public long getPaymentConfirmationNumber() {
+        return paymentConfirmationNumber;
+    }
 
-  public PaymentMethod getPaymentMethod() {
-    return paymentMethod;
-  }
-
-  public void setPaymentMethod(PaymentMethod paymentMethod) {
-    this.paymentMethod = paymentMethod;
-  }
-
-  public Date getPaymentDate() {
-    return paymentDate;
-  }
-
-  public void setPaymentDate(Date paymentDate) {
-    this.paymentDate = paymentDate;
-  }
-
-  public String getConfirmationNumber() {
-    return confirmationNumber;
-  }
-
-  public void setConfirmationNumber(String confirmationNumber) {
-    this.confirmationNumber = confirmationNumber;
-  }
-
-  public Time getTime() {
-    return time;
-  }
-
-  public void setTime(Time time) {
-    this.time = time;
-  }
-
-  public Double getAmount() {
-    return amount;
-  }
-
-  public void setAmount(Double amount) {
-    this.amount = amount;
-  }
+    public void setPaymentConfirmationNumber(long paymentConfirmationNumber) {
+        this.paymentConfirmationNumber = paymentConfirmationNumber;
+    }
 
   public Address getBillingAddress() {
-    return billingAddress;
-  }
+        return billingAddress;
+    }
 
-  public void setBillingAddress(Address billingAddress) {
-    this.billingAddress = billingAddress;
-  }
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
+    }
 
+    public long getId() {
+        return id;
+    }
 
-
+    public void setId(long id) {
+        this.id = id;
+    }
 }

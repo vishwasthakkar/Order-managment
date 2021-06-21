@@ -1,84 +1,123 @@
 package com.egen.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "addresses")
 public class Address {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "address_id")
+    private long id;
 
-  @Column(name = "address_line_1")
-  private String addressLine1;
+    @Column(name = "address_type")
+    private AddressType type;
 
-  @Column(name = "address_line_2")
-  private String addressLine2;
+    @Column(name = "address_line_1")
+    private String addressLine1;
 
-  @Column(name = "city")
-  private String city;
+    @Column(name = "address_line_2")
+    private String addressLine2;
 
-  @Column(name = "state")
-  private String state;
+    @Column(name = "address_city")
+    private String city;
 
-  @Column(name = "zip")
-  private String zip;
+    @Column(name = "address_state")
+    private String state;
 
-  public String getId() {
-    return id;
-  }
+    @Column(name = "address_zip")
+    private int zip;
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    @Column(name = "address_created_date")
+    private Timestamp createdDate;
 
-  public String getAddressLine1() {
-    return addressLine1;
-  }
+    @Column(name = "address_modified_date")
+    private Timestamp modifiedDate;
 
-  public void setAddressLine1(String addressLine1) {
-    this.addressLine1 = addressLine1;
-  }
+    public Address(AddressType type, String addressLine1, String addressLine2, String city, String state, int zip) {
+        this.type = type;
+        this.addressLine1 = addressLine1;
+        this.addressLine2 = addressLine2;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+    }
 
-  public String getAddressLine2() {
-    return addressLine2;
-  }
+    public Address() {
 
-  public void setAddressLine2(String addressLine2) {
-    this.addressLine2 = addressLine2;
-  }
+    }
 
-  public String getCity() {
-    return city;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public void setCity(String city) {
-    this.city = city;
-  }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-  public String getState() {
-    return state;
-  }
+    public AddressType getType() {
+        return type;
+    }
 
-  public void setState(String state) {
-    this.state = state;
-  }
+    public void setType(AddressType type) {
+        this.type = type;
+    }
 
-  public String getZip() {
-    return zip;
-  }
+    public String getAddressLine1() {
+        return addressLine1;
+    }
 
-  public void setZip(String zip) {
-    this.zip = zip;
-  }
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
 
-  public Address() {
+    public String getAddressLine2() {
+        return addressLine2;
+    }
 
-  }
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getZip() {
+        return zip;
+    }
+
+    public void setZip(int zip) {
+        this.zip = zip;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Timestamp getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Timestamp modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
 }
